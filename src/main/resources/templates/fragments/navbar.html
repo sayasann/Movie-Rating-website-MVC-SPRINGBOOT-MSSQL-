@@ -1,0 +1,133 @@
+<nav th:fragment="navbar(active)" class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+
+   <a class="navbar-brand d-flex align-items-center gap-2" th:href="@{/}">
+  <img th:src="@{/images/Mini_P.E.K.K.A_Skin-Default.png}" alt="Mini Pekka" height="45">
+  <span class="brand-text">
+    <span class="brand-mini">mini</span>
+    <span class="brand-pekka">pekkaTV</span>
+  </span>
+</a>
+    <ul class="navbar-nav ms-auto align-items-center">
+
+      <!-- HOME -->
+      <li class="nav-item">
+        <a class="nav-link"
+           th:classappend="${active == 'home'} ? 'active'"
+           th:href="@{/}">
+          Home
+        </a>
+      </li>
+
+      <!-- MOVIES -->
+      <li class="nav-item">
+        <a class="nav-link"
+           th:classappend="${active == 'movies'} ? 'active'"
+           th:href="@{/movies}">
+          Browse
+        </a>
+      </li>
+      <li class="nav-item ms-3">
+        <button id="themeToggleBtn" type="button" class="btn btn-outline-light btn-sm">
+          🌙 Dark
+        </button>
+      </li>
+      <!-- LOGIN / REGISTER -->
+      <li class="nav-item ms-3" th:if="${session.loggedUser == null}">
+        <a class="btn btn-outline-light btn-sm" th:href="@{/users/login}">
+          Login
+        </a>
+      </li>
+
+      <li class="nav-item ms-2" th:if="${session.loggedUser == null}">
+        <a class="btn btn-warning btn-sm text-dark" th:href="@{/users/register}">
+          Register
+        </a>
+      </li>
+
+      <!-- USER DROPDOWN -->
+      <li class="nav-item dropdown ms-3" th:if="${session.loggedUser != null}">
+        <a class="nav-link dropdown-toggle"
+           href="#"
+           role="button"
+           data-bs-toggle="dropdown">
+
+          <i class="bi bi-person-circle me-1"></i>
+          <span th:text="${session.loggedUser.userName}">username</span>
+
+        </a>
+
+        <ul class="dropdown-menu dropdown-menu-end">
+
+          <!-- FAVORILERIM -->
+          <li>
+            <a class="dropdown-item d-flex justify-content-between align-items-center"
+               th:href="@{/users/favorites}">
+              <span>
+                <i class="bi bi-star-fill text-warning me-2"></i>
+                Favourites
+              </span>
+              <span class="badge bg-warning text-dark"
+                    th:text="${session.favCount != null ? session.favCount : 0}">
+                0
+              </span>
+            </a>
+          </li>
+
+          <!-- IZLENECEKLERIM -->
+          <li>
+            <a class="dropdown-item d-flex justify-content-between align-items-center"
+               th:href="@{/users/watchList}">
+              <span>
+                <i class="bi bi-clock-fill text-primary me-2"></i>
+                Watch Later
+              </span>
+              <span class="badge bg-primary"
+                    th:text="${session.watchListCount != null ? session.watchListCount : 0}">
+                0
+              </span>
+            </a>
+          </li>
+
+          <!-- IZLEDIKLERIM -->
+          <li>
+            <a class="dropdown-item d-flex justify-content-between align-items-center"
+               th:href="@{/users/watched}">
+              <span>
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                Watched
+              </span>
+              <span class="badge bg-success"
+                    th:text="${session.watchedCount != null ? session.watchedCount : 0}">
+                0
+              </span>
+            </a>
+          </li>
+
+          <li><hr class="dropdown-divider"></li>
+		  <!-- MY ACCOUNT -->
+		  <li>
+		    <a class="dropdown-item"
+		       th:href="@{/users/account}">
+		      <i class="bi bi-gear-fill me-2"></i>
+		      My Account
+		    </a>
+		  </li>
+
+		  <li><hr class="dropdown-divider"></li>
+
+
+          <!-- LOGOUT -->
+          <li>
+            <a class="dropdown-item text-danger"
+               th:href="@{/users/logout}">
+              Logout
+            </a>
+          </li>
+
+        </ul>
+      </li>
+
+    </ul>
+  </div>
+</nav>

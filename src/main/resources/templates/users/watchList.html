@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('Watch Later')"></head>
+
+<body>
+<div th:replace="fragments/navbar :: navbar('')"></div>
+
+<div class="container my-5">
+
+  <h2 class="mb-4">Watch Later</h2>
+
+  <!--EMPTY STATE -->
+  <div th:if="${#lists.isEmpty(watchList)}"
+       class="alert alert-info text-center py-4">
+    <i class="bi bi-clock fs-3 mb-2 d-block"></i>
+    You haven’t added any movies to your watch later list yet.
+  </div>
+
+  <!--LIST -->
+  <div class="row" th:if="${!#lists.isEmpty(watchList)}">
+    <div class="col-md-4 mb-4" th:each="movie : ${watchList}">
+      <div class="card h-100 shadow-sm">
+
+        <div class="card-body">
+          <h5 class="card-title" th:text="${movie.title}">
+            Movie Title
+          </h5>
+
+          <p class="text-muted small mb-2">
+            <span th:text="${movie.releaseYear}">2024</span>
+          </p>
+
+          <a th:href="@{/movies/{id}(id=${movie.id})}"
+             class="btn btn-sm btn-outline-dark">
+            Details
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+<script th:src="@{/js/theme.js}" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(${actor.name})}"></head>
+
+<body>
+
+<!-- NAVBAR -->
+<div th:replace="~{fragments/navbar :: navbar('actors')}"></div>
+<!-- BACK TO MOVIE -->
+<div class="container my-3">
+    <a class="btn btn-sm btn-outline-secondary"
+       th:if="${movieId != null}"
+       th:href="@{/movies/{id}(id=${movieId})}">
+        ← Back to Movie
+    </a>
+
+    <a class="btn btn-sm btn-outline-secondary"
+       th:if="${movieId == null}"
+       th:href="@{/movies}">
+        ← Back to Movies
+    </a>
+</div>
+
+
+<div class="container my-5">
+
+    <!-- ACTOR HEADER -->
+    <div class="row g-4 align-items-start">
+
+        <!-- ACTOR IMAGE -->
+        <div class="col-md-4 col-lg-3">
+            <div class="rounded overflow-hidden border bg-light" style="aspect-ratio: 2 / 3;">
+                <img th:if="${actor.imageLink != null && !#strings.isEmpty(actor.imageLink)}"
+                     th:src="${actor.imageLink}"
+                     alt="actor"
+                     class="w-100 h-100"
+                     style="object-fit: cover;">
+
+                <div th:if="${actor.imageLink == null || #strings.isEmpty(actor.imageLink)}"
+                     class="w-100 h-100 d-flex align-items-center justify-content-center text-muted">
+                    <i class="bi bi-person" style="font-size: 3rem;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTOR DETAILS -->
+        <div class="col-md-8 col-lg-9">
+            <h1 th:text="${actor.name}">Actor Name</h1>
+
+            <div class="mt-3">
+                <h5 class="mb-2">Biography</h5>
+                <p class="text-muted"
+                   th:text="${actor.overview != null && !#strings.isEmpty(actor.overview)
+                   ? actor.overview
+                   : 'No biography available.'}">
+                    Actor overview...
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="my-5">
+
+    <!-- MOVIES SECTION -->
+    <section>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Filmography</h3>
+            <span class="text-muted small"
+                  th:text="${actor.movies != null ? #lists.size(actor.movies) + ' movies' : '0 movies'}">
+                0 movies
+            </span>
+        </div>
+
+        <!-- NO MOVIES -->
+        <div class="alert alert-light border"
+             th:if="${actor.movies == null || #lists.isEmpty(actor.movies)}">
+            No movies available for this actor.
+        </div>
+
+        <!-- MOVIE CARDS -->
+        <div class="row g-4"
+             th:if="${actor.movies != null && !#lists.isEmpty(actor.movies)}">
+
+            <div class="col-6 col-md-4 col-lg-3"
+                 th:each="m : ${actor.movies}">
+
+                <a th:href="@{/movies/{id}(id=${m.id})}"
+                   class="text-decoration-none">
+
+                    <div class="card h-100 shadow-sm">
+
+                        <!-- MOVIE POSTER -->
+                        <div class="bg-light" style="aspect-ratio: 2 / 3; overflow:hidden;">
+                            <img th:if="${m.posterLink != null && !#strings.isEmpty(m.posterLink)}"
+                                 th:src="${m.posterLink}"
+                                 alt="movie"
+                                 class="w-100 h-100"
+                                 style="object-fit: cover;">
+
+                            <div th:if="${m.posterLink == null || #strings.isEmpty(m.posterLink)}"
+                                 class="w-100 h-100 d-flex align-items-center justify-content-center text-muted">
+                                <i class="bi bi-film" style="font-size: 2rem;"></i>
+                            </div>
+                        </div>
+
+                        <!-- MOVIE INFO -->
+                        <div class="card-body">
+                            <div class="fw-semibold text-dark"
+                                 th:text="${m.title}">
+                                Movie Title
+                            </div>
+
+                            <div class="small text-muted"
+                                 th:text="${m.releaseYear != null ? m.releaseYear : ''}">
+                                2024
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+<!-- FOOTER -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/js/theme.js}" defer></script>
+
+</body>
+</html>

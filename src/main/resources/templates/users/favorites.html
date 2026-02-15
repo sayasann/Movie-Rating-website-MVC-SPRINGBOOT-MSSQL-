@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('My Favorites')"></head>
+
+<body>
+<div th:replace="fragments/navbar :: navbar('')"></div>
+
+<div class="container my-5">
+
+  <h2 class="mb-4">
+    ⭐ My Favorite Movies
+  </h2>
+
+  <!-- Favori yoksa -->
+  <div th:if="${#lists.isEmpty(favorites)}" class="alert alert-info">
+    You haven't added any favorite movies yet.
+  </div>
+
+  <!-- Favori listesi -->
+  <div class="row" th:if="${!#lists.isEmpty(favorites)}">
+
+    <div class="col-md-4 mb-4" th:each="movie : ${favorites}">
+      <div class="card h-100 shadow-sm">
+
+        <div class="card-body">
+          <h5 class="card-title" th:text="${movie.title}">Movie Title</h5>
+
+          <p class="card-text text-muted">
+            <span th:text="${movie.director}">Director</span> •
+            <span th:text="${movie.releaseYear}">Year</span>
+          </p>
+
+          <a th:href="@{/movies/{id}(id=${movie.id})}"
+             class="btn btn-outline-dark btn-sm">
+            View Details
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+<script th:src="@{/js/theme.js}" defer></script>
+
+</body>
+</html>

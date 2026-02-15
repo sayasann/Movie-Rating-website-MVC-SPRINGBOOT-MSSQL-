@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head('Login')"></head>
+
+<body>
+
+<div th:replace="fragments/navbar :: navbar('login')"></div>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+
+      <h3 class="text-center mb-4">Login</h3>
+
+      <form th:action="@{/users/login}" method="post">
+
+        <input type="text" name="userName"
+               class="form-control mb-3"
+               placeholder="Username" required>
+
+        <input type="password" name="password"
+               class="form-control mb-3"
+               placeholder="Password" required>
+
+        <button class="btn btn-primary w-100">
+          Login
+        </button>
+
+        <p class="text-danger text-center mt-3"
+           th:if="${error}"
+           th:text="${error}">
+        </p>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+<script th:src="@{/js/theme.js}" defer></script>
+
+</body>
+
+
+</html>

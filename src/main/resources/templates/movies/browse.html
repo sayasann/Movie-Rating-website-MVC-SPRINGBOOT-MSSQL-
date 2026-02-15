@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('Browse Movies')"></head>
+
+<body class="bg-cinedb">
+<div th:replace="fragments/navbar :: navbar('movies')"></div>
+
+<div class="container py-5">
+
+  <h1 class="display-4 fw-bold text-white mb-4">Browse Movies</h1>
+
+  <!-- SEARCH + SORT -->
+  <form method="get" th:action="@{/movies}" class="panel p-4 mb-4">
+    <div class="search-pill">
+      <i class="bi bi-search"></i>
+      <input class="form-control form-control-lg"
+             type="text"
+             name="q"
+             placeholder="Search movies..."
+             th:value="${q}">
+    </div>
+
+    <div class="d-flex align-items-center gap-3 mt-3 flex-wrap">
+      <div class="text-muted">Sort by:</div>
+
+      <select class="form-select sort-select"
+              name="sort"
+              onchange="this.form.submit()">
+        <option value="rating-desc" th:selected="${sort == null || sort == 'rating-desc'}">Highest Rated</option>
+        <option value="rating-asc"  th:selected="${sort == 'rating-asc'}">Lowest Rated</option>
+        <option value="year-desc"   th:selected="${sort == 'year-desc'}">Newest</option>
+        <option value="year-asc"    th:selected="${sort == 'year-asc'}">Oldest</option>
+        <option value="title-asc"   th:selected="${sort == 'title-asc'}">Title A-Z</option>
+      </select>
+
+      <button class="btn btn-outline-light ms-auto" type="submit">
+        Apply
+      </button>
+    </div>
+
+    <!-- FILTER CARD -->
+    <div class="panel-inner p-4 mt-4">
+      <h4 class="text-white fw-semibold mb-3">Filter Movies</h4>
+
+      <div class="row g-3">
+        
+        <div class="col-md-6">
+          <label class="form-label text-muted">Genre</label>
+          <select class="form-select" name="genreId" onchange="this.form.submit()">
+  <option value="" th:selected="${genreId == null}">All</option>
+  <option th:each="g : ${genres}"
+        th:value="${g.id}"
+        th:text="${g.name}"
+        th:selected="${genreId != null && genreId.toString() == g.id.toString()}">
+</option>
+
+</select>
+
+
+        </div>
+
+        <!-- Year -->
+        <div class="col-md-6">
+          <label class="form-label text-muted">Year</label>
+          <select class="form-select" name="year" onchange="this.form.submit()">
+            <option value="" th:selected="${year == null}">All</option>
+            <option th:each="y : ${years}"
+                    th:value="${y}"
+                    th:text="${y}"
+                    th:selected="${year != null && year == y}">
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="text-muted mb-3">
+    <span th:text="'Showing ' + ${#lists.size(movies)} + ' movies'">Showing 0 movies</span>
+  </div>
+
+  <!-- MOVIE CARDS GRID -->
+  <div class="row g-4">
+    <div class="col-md-6 col-lg-4" th:each="m : ${movies}">
+      <a class="movie-card" th:href="@{/movies/{id}(id=${m.id})}">
+        <div class="poster">
+          <!-- posterLink varsa göster; yoksa boş koyu alan kalsın -->
+          <img th:if="${m.posterLink != null && !#strings.isEmpty(m.posterLink)}"
+               th:src="${m.posterLink}"
+               alt="poster">
+          <div class="poster-fallback" th:if="${m.posterLink == null || #strings.isEmpty(m.posterLink)}">
+            <i class="bi bi-film"></i>
+          </div>
+
+          <div class="rating-badge" th:text="${m.imdbRating != null ? m.imdbRating : 'N/A'}">9.3</div>
+        </div>
+
+        <div class="p-3">
+          <div class="fw-semibold fs-5 text-white" th:text="${m.title}">Movie Title</div>
+          <div class="small text-muted">
+            <span th:text="${m.director}">Director</span>
+            <span> • </span>
+            <span th:text="${m.releaseYear}">1994</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+<script th:src="@{/js/theme.js}" defer></script>
+
+</body>
+</html>

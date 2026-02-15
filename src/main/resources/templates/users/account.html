@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head('My Account')"></head>
+
+<body>
+
+  <div th:replace="fragments/navbar :: navbar('account')"></div>
+
+  <div class="container mt-5" style="max-width: 600px;">
+
+    <h3 class="mb-4">My Account</h3>
+
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Change Password</h5>
+
+        <form th:action="@{/users/account/password}" method="post">
+
+          <input type="password"
+                 name="newPassword"
+                 class="form-control mb-3"
+                 placeholder="New Password"
+                 required>
+
+          <div th:if="${passwordError}" class="alert alert-danger">
+            <span th:text="${passwordError}"></span>
+          </div>
+
+          <div th:if="${success}" class="alert alert-success">
+            <span th:text="${success}"></span>
+          </div>
+
+          <button class="btn btn-primary w-100">
+            Update Password
+          </button>
+        </form>
+      </div>
+    </div>
+
+
+    <div class="card border-danger mb-5">
+      <div class="card-body">
+        <h5 class="card-title text-danger">Delete Account</h5>
+
+        <form th:action="@{/users/delete}" method="post">
+          <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input type="password"
+                   name="password"
+                   class="form-control"
+                   required>
+          </div>
+
+          <button type="submit"
+                  class="btn btn-danger w-100"
+                  onclick="return confirm('Are you sure you want to delete your account?')">
+            Delete Account
+          </button>
+        </form>
+
+        <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+      </div>
+    </div>
+
+  </div> 
+
+  <div th:replace="fragments/footer :: footer"></div>
+
+  <script th:src="@{/js/theme.js}" defer></script>
+</body>
+</html>

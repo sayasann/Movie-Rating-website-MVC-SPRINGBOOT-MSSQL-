@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head('Register')"></head>
+
+<body>
+
+	<div th:replace="fragments/navbar :: navbar('register')"></div>
+
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-5">
+
+				<h3 class="text-center mb-4">Register</h3>
+
+				<form th:action="@{/users/register}" th:object="${user}" method="post">
+
+					<input class="form-control mb-1" th:field="*{userName}" placeholder="Username">
+					<div class="text-danger small mb-2"
+										     th:if="${#fields.hasErrors('userName')}"
+										     th:errors="*{userName}">
+										</div>
+										<div class="text-danger small mb-2"
+										     th:if="${usernameError}">
+										    <span th:text="${usernameError}"></span>
+										</div>
+
+
+					<input class="form-control mb-1" th:field="*{userEmail}" placeholder="Email">
+					<div class="text-danger small mb-2"
+										     th:if="${#fields.hasErrors('userEmail')}"
+										     th:errors="*{userEmail}">
+										</div>
+
+					<input type="password" class="form-control mb-1" th:field="*{userPassword}" placeholder="Password">
+					<div class="text-danger small mb-2"
+										     th:if="${#fields.hasErrors('userPassword')}"
+										     th:errors="*{userPassword}">
+										</div>
+
+					<input type="date" class="form-control mb-1" th:field="*{userBirthDate}" required>
+					<div class="text-danger small mb-2"
+					     th:if="${#fields.hasErrors('adult')}"
+					     th:errors="*{adult}">
+					</div>
+
+					<div class="text-danger small mb-3"
+										     th:if="${#fields.hasErrors('userBirthDate')}"
+										     th:errors="*{userBirthDate}">
+										</div>
+					<button type = "submit" class="btn btn-warning w-100">
+						Register
+					</button>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="fragments/footer :: footer"></div>
+<script th:src="@{/js/theme.js}" defer></script>
+
+</body>
+
+</html>
